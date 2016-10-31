@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="9y3-JK-OJw">
+            <objects>
+                <viewController id="agu-nl-DNF" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="9uh-Hd-LyZ"/>
+                        <viewControllerLayoutGuide type="bottom" id="P1W-ZZ-Qjz"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="M46-Re-YGj">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchImageRestaurant" translatesAutoresizingMaskIntoConstraints="NO" id="sY7-q1-eyY"/>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="sY7-q1-eyY" firstAttribute="leading" secondItem="M46-Re-YGj" secondAttribute="leadingMargin" id="Iuc-Fb-GFP"/>
+                            <constraint firstItem="sY7-q1-eyY" firstAttribute="top" secondItem="9uh-Hd-LyZ" secondAttribute="bottom" id="PtW-Zi-eAj"/>
+                            <constraint firstItem="P1W-ZZ-Qjz" firstAttribute="top" secondItem="sY7-q1-eyY" secondAttribute="bottom" id="SfX-Nm-G41"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="sY7-q1-eyY" secondAttribute="trailing" id="pXQ-iO-w2F"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sYI-gV-k5D" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="25" y="230"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="LaunchImageRestaurant" width="861" height="700"/>
+    </resources>
+</document>
