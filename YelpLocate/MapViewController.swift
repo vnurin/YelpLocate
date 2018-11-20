@@ -11,7 +11,6 @@ import MapKit
 
 class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentationControllerDelegate {
     @IBOutlet weak var mapView: MKMapView!
-    var items: [MKAnnotation]!
     var item: Item? {
         didSet {
             if oldValue != nil {
@@ -53,7 +52,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     }
     
     func annotate() {
-        items = Load.instance.items
+        let items = YelpLocate.shared.businesses
         if !items.isEmpty {
             mapView.removeAnnotation(annotation)
             mapView.removeAnnotations(self.mapView.annotations)

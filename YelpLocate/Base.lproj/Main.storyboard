@@ -62,6 +62,10 @@
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="K55-pd-Mkb" id="21R-FV-sl9"/>
+                                    <outlet property="delegate" destination="K55-pd-Mkb" id="lzY-K4-tLA"/>
+                                </connections>
                             </tableView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Restaurant Search" textAlignment="natural" minimumFontSize="9" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="4kj-x2-j2N">
                                 <rect key="frame" x="6" y="72" width="258" height="30"/>
@@ -71,6 +75,9 @@
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="search"/>
+                                <connections>
+                                    <outlet property="delegate" destination="K55-pd-Mkb" id="M5V-TE-O5o"/>
+                                </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Svl-Q4-Wjy">
                                 <rect key="frame" x="272" y="72" width="103" height="30"/>
@@ -308,6 +315,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="lSy-A2-kuI"/>
+        <segue reference="b86-qN-A2G"/>
     </inferredMetricsTieBreakers>
 </document>
