@@ -148,11 +148,12 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         }
         view.leftCalloutAccessoryView = nil
         view.rightCalloutAccessoryView = nil
-        if (annotation as! Item).thumbnailImageURL != nil {
+        if (annotation as! Item).imageURL != nil {
 //            (view.leftCalloutAccessoryView as! UIImageView).downloadedFrom(url: (annotation as! Item).thumbnailImageURL!)
             view.leftCalloutAccessoryView = UIButton(frame: Constants.ThumbnailFrame)
             let imageView = UIImageView(frame: Constants.ThumbnailFrame)
-            imageView.downloadedFrom(url: (annotation as! Item).thumbnailImageURL!)
+            imageView.contentMode = .scaleAspectFill
+            imageView.downloadedFrom(url: (annotation as! Item).imageURL!)
             view.leftCalloutAccessoryView?.addSubview(imageView)
         }
         if (annotation as! Item).review != nil {

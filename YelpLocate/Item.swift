@@ -19,11 +19,8 @@ class Item: NSObject {
     }
     var shortAddress: String {
         if let location = self.dictionary["location"] as? [String: Any] {
-            if let address = location["address"] as? Array<String> {
-                if let neighborhoods = location["neighborhoods"] as? Array<String> {
-                    return (address + [neighborhoods[0]]).joined(separator: ", ")
-                }
-                return address.joined(separator: ", ")
+            if let address = location["address1"] as? String {
+                return (address)
             }
         }
         return ""
@@ -35,12 +32,6 @@ class Item: NSObject {
             }
         }
         return ""
-    }
-    var thumbnailImageURL: URL? {
-        if let image = self.dictionary["url"] as? String {
-            return URL(string: image)
-        }
-        return nil
     }
     var imageURL: URL? {
         if let image = self.dictionary["image_url"] as? String {

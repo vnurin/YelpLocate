@@ -11,8 +11,7 @@ import MapKit
 class ListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var tableView: UITableView!
-//    @IBOutlet weak var runner: UIActivityIndicatorView!
-    let runner = UIActivityIndicatorView()
+    @IBOutlet weak var runner: UIActivityIndicatorView!
     @IBOutlet weak var sortButton: UIButton!
     var userLocation: UserLocation!
     @IBAction func sort(_ sender: UIButton) {
@@ -38,26 +37,21 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
         super.viewDidLoad()
         userLocation = UserLocation()
         userLocation.requestLocation()
-        performSearch()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: Constants.ItemsDidChangeNotification), object: nil, queue: nil, using: {[unowned self] _ in
+        NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: Constants.ItemsDidChangeNotification), object: nil, queue: nil) {_ in
+            DispatchQueue.main.async {
                 self.tableView.reloadData()
                 if YelpLocate.shared.itemsAreFromServer && self.sortButton.tag == 1 {
                     self.sortButton.setTitle(Constants.ButtonTitles[0], for: .normal)
                     self.sortButton.tag = 0
                 }
-
-            })
-//        NotificationCenter.default.addObserver(self, selector: #selector(ListViewController.performSearch), name: NSNotification.Name(rawValue: Constants.UserLocationUpdatedNotification), object: nil)
+            }
+        }
+        performSearch()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-//        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constants.UserLocationUpdatedNotification), object: nil)
+    deinit {
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: Constants.ItemsDidChangeNotification), object: nil)
     }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let identifier = segue.identifier {
             switch identifier {
@@ -86,7 +80,6 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
             YelpLocate.shared.getBusinesses(from: items)
             DispatchQueue.main.async(execute: {
                 self.runner.stopAnimating()
-                self.runner.removeFromSuperview()
             })
 
         })
@@ -97,9 +90,10 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return YelpLocate.shared.businesses.count
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "BusinessTableViewCell") as! ListTableViewCell
-        cell.item = YelpLocate.shared.businesses[(indexPath as NSIndexPath).row]
+        cell.item = YelpLocate.shared.businesses[indexPath.row]
         cell.initialize()
         return cell
     }

@@ -51,11 +51,18 @@
                                                     <rect key="frame" x="8" y="0.0" width="60" height="60"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Distance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SNX-XA-3PR">
+                                                    <rect key="frame" x="8" y="55" width="70" height="22"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="addressLabel" destination="jEU-Jo-WKS" id="Yrm-1M-2ue"/>
-                                            <outlet property="distLabel" destination="XkU-7i-tfD" id="Ua2-Ih-hvd"/>
+                                            <outlet property="distLabel" destination="SNX-XA-3PR" id="IXR-EE-3uG"/>
                                             <outlet property="nameLabel" destination="Xfx-86-ptr" id="hZy-Fj-A0x"/>
                                             <outlet property="thumbnailImageView" destination="zyP-8Y-f6s" id="uYJ-n1-jJp"/>
                                             <segue destination="foL-Fu-euY" kind="showDetail" identifier="Show Map" trigger="accessoryAction" id="b86-qN-A2G"/>
@@ -90,13 +97,10 @@
                                     <action selector="sort:" destination="K55-pd-Mkb" eventType="touchUpInside" id="Yvj-ib-QBZ"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Dist" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="XkU-7i-tfD">
-                                <rect key="frame" x="6" y="259" width="60" height="17"/>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="jQp-sq-XcG">
+                                <rect key="frame" x="177" y="323" width="20" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -109,6 +113,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Nearby Restaurants" id="9z7-3P-uwt"/>
                     <connections>
+                        <outlet property="runner" destination="jQp-sq-XcG" id="t2M-gH-5Xa"/>
                         <outlet property="sortButton" destination="Svl-Q4-Wjy" id="avE-ZX-bkO"/>
                         <outlet property="tableView" destination="KC7-C7-GHC" id="Mmy-gk-Wwc"/>
                         <outlet property="textField" destination="4kj-x2-j2N" id="9tG-ic-7jh"/>
@@ -116,7 +121,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tv0-d7-Nzi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="836" y="-430.43478260869568"/>
+            <point key="canvasLocation" x="952.79999999999995" y="-430.43478260869568"/>
         </scene>
         <!--Map View Controller-->
         <scene sceneID="CPo-fo-hgQ">
@@ -311,7 +316,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aNI-je-Lyr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="836" y="374.66266866566718"/>
+            <point key="canvasLocation" x="953" y="386"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
