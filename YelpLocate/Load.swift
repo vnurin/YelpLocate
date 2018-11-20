@@ -7,16 +7,16 @@
 //
 
 import Foundation
+import UIKit
 
 struct Constants {
+    static let basePath = "https://api.yelp.com/v3/"
     static let ThumbnailFrame = CGRect(x:0.0, y:0.0, width:64.0, height:64.0)
     static let ButtonTitles = ["By Name", "By Distance"]
-    static let ItemsCameNotification = "ItemsCameNotification"
+    static let ItemsDidChangeNotification = "ItemsDidChangeNotification"
     static let UserLocationUpdatedNotification = "UserLocationUpdatedNotification"
-    static let YelpConsumerKey = "xNm8gMavmp6i3LlnzJPf_w"
-    static let YelpConsumerSecret = "7uh4fYdz9r6IX5qYQqzvI2GQsKA"
-    static let YelpToken = "wkJD2bLk3gzHmREVjQ8MLlFX3OgQOnmz"
-    static let YelpTokenSecret = "kp83Nt2APdBL_NezCeR-s6bdrP0"
+//    static let ID = "GS-JJLsD2oA2RKT159BCjg"
+    static let Key = "QLxSzhwtQAgxCff4OR41aL1lwBSiygcUc8h3VyKBhiKLAbVJLBPZpDapVy4QkZ5fpcqW-90avEzmQyZPVNSWI4dLB2e2J7Dg1-TjaFsgW2GBVq-iPx1gVKkeI0cRWHYx"
     static let TorontoLatitude = 43.700110
     static let TorontoLongitude = -79.416300
     static let TorontoCoordinates = "43.7001100,-79.4163000"
@@ -24,12 +24,12 @@ struct Constants {
 
 class Load {
     let limit: Int = 10
-    lazy var client: Client! = Client(consumerKey: Constants.YelpConsumerKey, consumerSecret: Constants.YelpConsumerSecret, accessToken: Constants.YelpToken, accessSecret: Constants.YelpTokenSecret)
     var itemsAreFromServer = false
     var items: Array<Item> = [] {
         didSet {
             if !items.isEmpty {
-                NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.ItemsCameNotification), object: nil, userInfo: ["isFromServer": itemsAreFromServer, "items": items ])
+//                NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.ItemsDidChangeNotification), object: nil, userInfo: ["isFromServer": itemsAreFromServer, "items": items ])
+                NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.ItemsDidChangeNotification), object: nil, userInfo: nil)
             }
         }
     }
@@ -39,4 +39,5 @@ class Load {
         }
         return Static.instance
     }
+//    static var instance = Load()
 }

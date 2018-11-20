@@ -9,7 +9,7 @@
 import Foundation
 import MapKit
 
-class ImageViewController: UIViewController, MKMapViewDelegate {
+class ImageViewController: UIViewController {
     @IBOutlet weak var imageVIew: UIImageView!
     
     @IBOutlet weak var scrollVIew: UIScrollView!

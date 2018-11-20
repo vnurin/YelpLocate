@@ -7,10 +7,10 @@
 //
 
 import MapKit
-import CoreLocation
+//import CoreLocation
 
 class Item: NSObject, MKAnnotation {
-    var dictionary: NSDictionary
+    var dictionary: [String: Any]
     var userLocation: UserLocation = UserLocation()
     lazy var distance: Double = {return self.location.distance(from: self.userLocation.location)}()
     var name: String {
@@ -19,7 +19,7 @@ class Item: NSObject, MKAnnotation {
         }
     }
     var shortAddress: String {
-        if let location = self.dictionary["location"] as? NSDictionary {
+        if let location = self.dictionary["location"] as? [String: Any] {
             if let address = location["address"] as? Array<String> {
                 if let neighborhoods = location["neighborhoods"] as? Array<String> {
                     return (address + [neighborhoods[0]]).joined(separator: ", ")
@@ -30,7 +30,7 @@ class Item: NSObject, MKAnnotation {
         return ""
     }
     var displayAddress: String {
-        if let location = self.dictionary["location"] as? NSDictionary {
+        if let location = self.dictionary["location"] as? [String: Any] {
             if let address = location["display_address"] as? Array<String> {
                 return address.joined(separator: ", ")
             }
@@ -38,7 +38,7 @@ class Item: NSObject, MKAnnotation {
         return ""
     }
     var thumbnailImageURL: URL? {
-        if let image = self.dictionary["snippet_image_url"] as? String {
+        if let image = self.dictionary["url"] as? String {
             return URL(string: image)
         }
         return nil
@@ -50,21 +50,17 @@ class Item: NSObject, MKAnnotation {
         return nil
     }
     var location: CLLocation {
-        return CLLocation(latitude: self.latitude!, longitude: self.longitude!)
+        return CLLocation(latitude: latitude!, longitude: longitude!)
     }
     var latitude: Double? {
-        if let location = self.dictionary["location"] as? NSDictionary {
-            if let coordinate = location["coordinate"] as? NSDictionary {
-                return (coordinate["latitude"] as! Double)
-            }
+        if let coordinate = self.dictionary["coordinates"] as? [String: Any] {
+            return (coordinate["latitude"] as! Double)
         }
         return nil
     }
     var longitude: Double? {
-        if let location = self.dictionary["location"] as? NSDictionary {
-            if let coordinate = location["coordinate"] as? NSDictionary {
-                return (coordinate["longitude"] as! Double)
-            }
+        if let coordinate = self.dictionary["coordinates"] as? [String: Any] {
+            return (coordinate["longitude"] as! Double)
         }
         return nil
     }
@@ -81,7 +77,7 @@ class Item: NSObject, MKAnnotation {
     let reviewCount: NSNumber?
     let distance: String?*/
 
-    init(dictionary: NSDictionary) {
+    init(dictionary: [String: Any]) {
         self.dictionary = dictionary
 /*
         let categoriesArray = dictionary["categories"] as? [[String]]
@@ -118,13 +114,13 @@ class Item: NSObject, MKAnnotation {
 //        _ = Client.sharedInstance.searchWithTerm(term, sort: sort, categories: categories, deals: deals, completion: completion)
         _ = Client.sharedInstance.searchWithTerm(term, sort: sort, completion: completion)
     }
-    class func businesses(array: [NSDictionary]) -> [Item] {
-        var businesses = [Item]()
+    class func businesses(array: [[String: Any]]) -> [Item] {
+        var items = [Item]()
         for dictionary in array {
             let business = Item(dictionary: dictionary)
-            businesses.append(business)
+            items.append(business)
         }
-        return businesses
+        return items
     }
 //MARK: MKAnnotation protocol
     var coordinate: CLLocationCoordinate2D {

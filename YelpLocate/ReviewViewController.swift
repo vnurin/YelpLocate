@@ -6,7 +6,7 @@
 //  Copyright © 2016 BABELONi INC. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class ReviewViewController: UIViewController {
     @IBOutlet weak var nameLabel: UILabel!
@@ -28,7 +28,7 @@ class ReviewViewController: UIViewController {
     }
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        preferredContentSize = view.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        preferredContentSize = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
     private func updateUI() {
 //        title = item?.displayAddress

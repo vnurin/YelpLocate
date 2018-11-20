@@ -14,6 +14,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     var items: [MKAnnotation]!
     var item: Item? {
         didSet {
+            if oldValue != nil {
+                mapView.deselectAnnotation(oldValue, animated: true)
+            }
             if item != nil {
                 navigationItem.title = item?.displayAddress
                 mapView?.selectAnnotation(item! as MKAnnotation, animated: true)
@@ -22,51 +25,54 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     }
     var center: CLLocationCoordinate2D!
     var userLocation = UserLocation()
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        mapView.showsUserLocation = true
-        mapView.mapType = .satellite
-        mapView.showsUserLocation = true
-        self.mapView.delegate = self
-        center = self.userLocation.location.coordinate
-        
-        let region = MKCoordinateRegion(center: center, span: self.mapView.region.span)
-        self.mapView.setRegion(region, animated: true)
-
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = CLLocationCoordinate2D(latitude: center.latitude, longitude: center.longitude)
-        let view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "BusinessAnnotation")
+    let annotation = MKPointAnnotation()
+    lazy var annotationView: MKPinAnnotationView = {
+        let view = MKPinAnnotationView(annotation: self.annotation, reuseIdentifier: "BusinessAnnotation")
         view.image = UIImage(named: "MyLocationPin")
         view.pinTintColor = UIColor.blue
         view.canShowCallout = true
         view.animatesDrop = true
-        self.mapView.addAnnotation(annotation)
-        self.mapView.setRegion(MKCoordinateRegion(center: annotation.coordinate, span: MKCoordinateSpanMake(0.01, 0.01)), animated: false)
+        return view
+    }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        mapView.showsUserLocation = true
+        mapView.mapType = .satellite
+        self.mapView.delegate = self
+        center = self.userLocation.location.coordinate
+        
+        annotation.coordinate = CLLocationCoordinate2D(latitude: center.latitude, longitude: center.longitude)
         self.mapView.layer.cornerRadius = 9.0
         self.mapView.layer.masksToBounds = true
+        self.mapView.isZoomEnabled = true
+        self.mapView.setRegion(MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)), animated: true)
+        /*        let region = MKCoordinateRegion(center: center, span: self.mapView.region.span)
+         self.mapView.setRegion(region, animated: true)*/
         annotate()
     }
     
     func annotate() {
         items = Load.instance.items
         if !items.isEmpty {
-            self.mapView.removeAnnotations(self.mapView.annotations)
+            mapView.removeAnnotation(annotation)
+            mapView.removeAnnotations(self.mapView.annotations)
+            mapView.addAnnotation(annotation)
             mapView.addAnnotations(items)
-            mapView.showAnnotations(items, animated: true)
+            mapView.showAnnotations([annotation]+items, animated: true)
             if item != nil {
-                mapView.selectAnnotation(item as! MKAnnotation, animated: true)
+                mapView.selectAnnotation(item!, animated: true)
             }
         }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let destination = segue.destination.regularViewController
+        let destination = segue.destination.contentViewController
         let annotationView = sender as? MKAnnotationView
         let item = annotationView?.annotation as? Item
         if segue.identifier == "Show Image" {
             if let vc = destination as? ImageViewController {
-                if item != nil, let imageURL = item!.imageURL {
+                if item != nil, let _ = item!.imageURL {
                     vc.item = item
                     vc.navigationItem.title = item!.displayAddress
                 }
@@ -153,6 +159,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         if (annotation as! Item).review != nil {
             view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
         }
+        if annotation === item {
+            view.image = UIImage(named: "MyAnnotationPin")
+        }
         view.canShowCallout = true
         return view
     }
@@ -172,7 +181,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
             (annotationView.leftCalloutAccessoryView as! UIImageView).downloadedFrom(url: (item?.thumbnailImageURL!)!)
         }
 */
-        item = annotationView.annotation as? Item
     }
 func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if control == view.leftCalloutAccessoryView {
@@ -182,27 +190,36 @@ func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, callou
         }
     }
 
-//MARK: - UIPopoverPresentationController
+    //MARK: - UIPopoverPresentationController
     func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
-        mapView.selectAnnotation(item! as! MKAnnotation, animated: true)
+        mapView.selectAnnotation(item! as MKAnnotation, animated: true)
     }
 
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
     }
-
-    func presentationController(_ controller: UIPresentationController, viewControllerForAdaptivePresentationStyle style: UIModalPresentationStyle) -> UIViewController? {
-        let nc = UINavigationController(rootViewController: controller.presentedViewController)
-        if style == .fullScreen {
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+//OO.        return traitCollection.horizontalSizeClass == .compact ? .overFullScreen : .none
+        return .none//OO.
+    }
+    
+/*OO.    func presentationController(_ controller: UIPresentationController, viewControllerForAdaptivePresentationStyle style: UIModalPresentationStyle) -> UIViewController? {
+        if style == .fullScreen || style == .overFullScreen {
+            let nc = UINavigationController(rootViewController: controller.presentedViewController)
+            let visualEffectsView = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
+            visualEffectsView.frame = nc.view.bounds
+            visualEffectsView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            nc.view.insertSubview(visualEffectsView, at: 0)
             return nc
         } else {
-            return traitCollection.horizontalSizeClass == .compact ? nc : nil
+            return nil
         }
     }
+*/
 }
-
 extension UIViewController {
-    var regularViewController: UIViewController {
+    var contentViewController: UIViewController {
         if let nc = self as? UINavigationController {
             return nc.visibleViewController ?? nc
         } else {

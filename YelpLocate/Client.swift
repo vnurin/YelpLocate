@@ -11,68 +11,68 @@
 */
 import UIKit
 
-enum SortMode: Int {
-        case bestMatched=0, distance, highestRated
+enum SortMode: String {
+        case best_match, rating, review_count, distance
     }
 
-class Client: BDBOAuth1RequestOperationManager {
-    var accessToken: String!
-    var accessSecret: String!
-//    var parameters: [String : AnyObject] = ["term": "restaurants" as AnyObject, "limit": 10 as AnyObject]
-    var parameters: [String : AnyObject] = ["limit": 10 as AnyObject]
-    static let sharedInstance = Client(consumerKey: Constants.YelpConsumerKey, consumerSecret: Constants.YelpConsumerSecret, accessToken: Constants.YelpToken, accessSecret: Constants.YelpTokenSecret)
+class Client {
+//    var parameters: [String : Any] = ["term": "restaurants" as Any, "limit": 10 as Any]
+    var parameters: [String : Any] = ["limit": 10 as Any]
+    static let sharedInstance = Client()
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
-    init(consumerKey key: String!, consumerSecret secret: String!, accessToken: String!, accessSecret: String!) {
-        self.accessToken = accessToken
-        self.accessSecret = accessSecret
-        let baseUrl = URL(string: "https://api.yelp.com/v2/")
-        super.init(baseURL: baseUrl, consumerKey: key, consumerSecret: secret);
-        let token = BDBOAuth1Credential(token: accessToken, secret: accessSecret, expiration: nil)
-        self.requestSerializer.saveAccessToken(token)
-    }
-    
-//    func searchWithTerm(_ term: String, sort: SortMode?, categories: [String]?, deals: Bool?, completion: @escaping ([Item]?, Error?) -> Void) -> AFHTTPRequestOperation {
-    func searchWithTerm(_ term: String, sort: SortMode?, completion: @escaping ([Item]?, Error?) -> Void) -> AFHTTPRequestOperation {
-//        var parameters: [String : AnyObject] = ["term": term as AnyObject, "ll": Constants.TorontoCoordinates as AnyObject]
-        parameters["term"] = term as AnyObject
+    func searchWithTerm(_ term: String, sort: SortMode?, completion: @escaping ([Item]?, Error?) -> Void) {
+//        var parameters: [String : Any] = ["term": term as Any, "ll": Constants.TorontoCoordinates as Any]
+        parameters["term"] = term as Any
+        parameters["location"] = Constants.TorontoCoordinates
+        var urlComponents = URLComponents(string: Constants.basePath + "businesses/search")!
+        urlComponents.queryItems = [URLQueryItem(name: "limit", value: "10"), URLQueryItem(name: "term", value: term), URLQueryItem(name: "location", value: Constants.TorontoCoordinates)]
         if sort != nil {
-            parameters["sort"] = sort!.rawValue as AnyObject?
+            parameters["sort_by"] = sort!.rawValue
+            urlComponents.queryItems!.append(URLQueryItem(name: "sort_by", value: sort!.rawValue))
         }
 /*
         if categories != nil && categories!.count > 0 {
-            parameters["category_filter"] = (categories!).joined(separator: ",") as AnyObject?
+            parameters["category_filter"] = (categories!).joined(separator: ",") as Any?
         }
         
         if deals != nil {
-            parameters["deals_filter"] = deals! as AnyObject?
+            parameters["deals_filter"] = deals! as Any?
         }
 */
 //        print(parameters)
         
-//!        parameters = ["term": term as AnyObject, "ll": Constants.TorontoCoordinates as AnyObject]
-//        parameters["category_filter"] = "italian" as AnyObject?
-//          parameters["sort"] = sort!.rawValue as AnyObject?
-//          parameters["category_filter"] = "restaurants" as AnyObject?
-//          parameters["deals_filter"] = deals! as AnyObject?
-
-        return self.get("search", parameters: parameters, success: {
-            (operation: AFHTTPRequestOperation?, response: Any?) -> Void in if let response = response as? [String: Any] {
-                let dictionaries = response["businesses"] as? [NSDictionary]
-                if dictionaries != nil {
-                    completion(Item.businesses(array: dictionaries!), nil)
+//!        parameters = ["term": term as Any, "ll": Constants.TorontoCoordinates as Any]
+//        parameters["category_filter"] = "italian" as Any?
+//          parameters["sort"] = sort!.rawValue as Any?
+//          parameters["category_filter"] = "restaurants" as Any?
+//          parameters["deals_filter"] = deals! as Any?
+        
+        guard let url = urlComponents.url, let parametersData = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {
+            return
+        }
+        print(url)
+        var request = URLRequest(url: url)
+//        request.httpMethod = "POST"
+//        request.httpBody = parametersData
+        request.addValue("Bearer \(Constants.Key)", forHTTPHeaderField: "Authorization")
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if error == nil {
+                do {
+                    let value = try JSONSerialization.jsonObject(with: data!, options: [])
+                    if let dictionaries = value as? [String: Any], let businesses = dictionaries["businesses"] as? [[String: Any]] {
+                        completion(Item.businesses(array: businesses), nil)
+                    }
+                }
+                catch {
+                    debugPrint(error)
                 }
             }
-        },
-        failure: { (operation: AFHTTPRequestOperation?, error: Error?) -> Void in
-//            completion(nil, error)
-            print(error.debugDescription)
-        })!
+            else {
+                debugPrint(error!)
+            }
+        }.resume()
     }
-    func searchWithTerm(_ term: String, completion: @escaping ([Item]?, Error?) -> Void) -> AFHTTPRequestOperation {
+    func searchWithTerm(_ term: String, completion: @escaping ([Item]?, Error?) -> Void) {
 //        return searchWithTerm(term, sort: nil, categories: nil, deals: nil, completion: completion)
         return searchWithTerm(term, sort: nil, completion: completion)
     }

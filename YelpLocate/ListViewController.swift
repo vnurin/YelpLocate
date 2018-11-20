@@ -5,15 +5,14 @@
 //  Created by Vahagn Nurijanyan on 2016-10-27.
 //  Copyright © 2016 BABELONi INC. All rights reserved.
 //
-
-import CoreLocation
 import UIKit
 import MapKit
 
 class ListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var runner: UIActivityIndicatorView!
+//    @IBOutlet weak var runner: UIActivityIndicatorView!
+    let runner = UIActivityIndicatorView()
     @IBOutlet weak var sortButton: UIButton!
 //    let data = Load()
     let data = Load.instance
@@ -34,40 +33,45 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
             data.items = data.items.sorted{ $0.distance < $1.distance }
         }
     }
+    override func awakeFromNib() {
+        super.awakeFromNib();
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         userLocation = UserLocation()
         userLocation.requestLocation()
-        textField.delegate = self
         tableView.dataSource = self
         tableView.delegate = self
+        textField.delegate = self
         performSearch()
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: Constants.ItemsCameNotification), object: nil, queue: nil, using: {[unowned self] _ in
+        NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: Constants.ItemsDidChangeNotification), object: nil, queue: nil, using: {[unowned self] _ in
                 self.tableView.reloadData()
+                if self.data.itemsAreFromServer && self.sortButton.tag == 1 {
+                    self.sortButton.setTitle(Constants.ButtonTitles[0], for: .normal)
+                    self.sortButton.tag = 0
+                }
+
             })
 //        NotificationCenter.default.addObserver(self, selector: #selector(ListViewController.performSearch), name: NSNotification.Name(rawValue: Constants.UserLocationUpdatedNotification), object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
 //        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constants.UserLocationUpdatedNotification), object: nil)
-        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: Constants.ItemsCameNotification), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: Constants.ItemsDidChangeNotification), object: nil)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let identifier = segue.identifier {
             switch identifier {
             case "Show Map":
-                print(segue.destination.childViewControllers[0])
-                if segue.destination.childViewControllers[0] is MapViewController {
-                    if sender != nil {
-                        let item = (sender as! ListTableViewCell).item
-                        (segue.destination.childViewControllers[0]  as! MapViewController).item = item
-                        segue.destination.childViewControllers[0].navigationItem.title = item?.displayAddress
-
-                    }
+//                print(segue.destination.childViewControllers[0])
+                if let mapViewController = segue.destination.children[0] as? MapViewController {
+                    let item = (sender as! ListTableViewCell).item
+                    mapViewController.item = item
+                    mapViewController.navigationItem.title = item?.name
                 }
             default: break
             }
@@ -76,10 +80,6 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func performSearch() {
         runner.startAnimating()
-        if sortButton.tag == 1 {
-            sortButton.setTitle(Constants.ButtonTitles[0], for: .normal)
-            sortButton.tag = 0
-        }
         var term1 = "restaurants"
         if textField.text != nil  && textField.text != "" {
             term1 += ","+textField.text!.replacingOccurrences(of: " ", with: ",", options: .literal, range: nil)
@@ -119,22 +119,24 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
             client.parameters["categories"] = nil
         }*/
 
-        client.parameters["ll"] = String(userLocation.latitude)+","+String(userLocation.longitude) as AnyObject
-        print(client.parameters["ll"])
 /*        client.parameters = ["ll": Constants.TorontoCoordinates as AnyObject]
         client.parameters["category_filter"] = "italian" as AnyObject?*/
         //        client.searchWithTerm(sort: SortMode.distance, completion: {[unowned self]
-          client.searchWithTerm(term1, sort: .distance, completion: {[unowned self]
+          _ = client.searchWithTerm(term1, sort: .distance, completion: {[unowned self]
 //        client.searchWithTerm("restaurant", completion: {[unowned self]
             (items, error) -> Void in
             if error == nil {
                 self.data.itemsAreFromServer = true
                 self.data.items = items!
-                self.runner.stopAnimating()
             }
             else {
                 print(error!.localizedDescription)
             }
+            DispatchQueue.main.async(execute: {
+                self.runner.stopAnimating()
+                self.runner.removeFromSuperview()
+            })
+
         })
 
     }
@@ -152,12 +154,20 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     //MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "Show Map", sender: tableView.cellForRow(at: indexPath))
+//        performSegue(withIdentifier: "Show Map", sender: tableView.cellForRow(at: indexPath))
+        
+        if let mapViewController = splitViewController?.viewControllers.last as? MapViewController {
+            mapViewController.item=data.items[indexPath.row];
+        }
+        else {
+            performSegue(withIdentifier: "Show Map", sender: tableView.cellForRow(at: indexPath))
+        }
+        
 //        self.tableView.deselectRow(at: indexPath, animated: true)
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70.0
+        return 80.0
     }
     
     //MARK: - UITextFieldDelegate

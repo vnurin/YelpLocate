@@ -29,7 +29,7 @@ class ListTableViewCell: UITableViewCell {
 }
 
 extension UIImageView {
-    func downloadedFrom(url: URL, contentMode mode: UIViewContentMode = .scaleAspectFit) {
+    func downloadedFrom(url: URL, contentMode mode: UIView.ContentMode = .scaleAspectFit) {
         contentMode = mode
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             guard

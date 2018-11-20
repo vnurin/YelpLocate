@@ -8,19 +8,18 @@
 
 import CoreLocation
 
-class UserLocation: NSObject, CLLocationManagerDelegate {
+class UserLocation: NSObject {
     
     class UserLocationManager: NSObject, CLLocationManagerDelegate {
         var locationManager: CLLocationManager = CLLocationManager()
-        var latitude: Double!
-        var longitude: Double!
+        var latitude: Double?
+        var longitude: Double?
         fileprivate var requested: Bool = false
         
         func requestLocation() {
             if self.requested {
                 return
             }
-            locationManager.startUpdatingLocation()
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.requestWhenInUseAuthorization()
@@ -32,28 +31,27 @@ class UserLocation: NSObject, CLLocationManagerDelegate {
             print("error = \(error)")
         }
         
-        private func locationManager(_ manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
-            let location = locations.last as! CLLocation
+        func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+            let location = locations.last!
             if location.horizontalAccuracy > 0 {
+                self.locationManager.stopUpdatingLocation()
                 self.latitude = location.coordinate.latitude
                 self.longitude = location.coordinate.longitude
                 
                 NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.UserLocationUpdatedNotification), object: nil)
-                self.locationManager.stopUpdatingLocation()
-                let time = DispatchTime.now() + Double(Int64(60.0 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+                let time = DispatchTime.now() + Double(60 * NSEC_PER_SEC)
                 DispatchQueue.main.asyncAfter(deadline: time, execute: {[unowned self] in
                     self.locationManager.startUpdatingLocation()
                 })
             }
         }
-        
         class var instance: UserLocationManager {
             struct Static {
                 static let instance: UserLocationManager = UserLocationManager()
             }
             return Static.instance
         }
-        
+//        static var instance = UserLocationManager()
     }
     
     var manager: UserLocationManager!
