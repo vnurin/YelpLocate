@@ -14,7 +14,6 @@ class ListTableViewCell: UITableViewCell {
     @IBOutlet weak var distLabel: UILabel!
     @IBOutlet weak var thumbnailImageView: UIImageView! {
         didSet {
-            thumbnailImageView.contentMode = .scaleAspectFill
             thumbnailImageView.layer.cornerRadius = 7.0
             thumbnailImageView.layer.masksToBounds = true
             thumbnailImageView.layer.borderWidth = 1.0

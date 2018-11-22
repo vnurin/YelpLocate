@@ -10,7 +10,7 @@ import Foundation
 import MapKit
 
 class ImageViewController: UIViewController {
-    @IBOutlet weak var imageVIew: UIImageView!
+    @IBOutlet weak var imageView: UIImageView!
     
     @IBOutlet weak var scrollVIew: UIScrollView!
     var item: Item!
@@ -18,7 +18,6 @@ class ImageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        scrollVIew.contentSize = imageVIew.frame.size
-        imageVIew.downloadedFrom(url: item.imageURL!)
+        imageView.downloadedFrom(url: item.imageURL!)
     }
 }

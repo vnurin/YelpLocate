@@ -8,18 +8,20 @@
 
 import Foundation
 import UIKit
+import CoreLocation
 
 struct Constants {
     static let basePath = "https://api.yelp.com/v3/"
     static let ThumbnailFrame = CGRect(x:0.0, y:0.0, width:64.0, height:64.0)
     static let ButtonTitles = ["By Name", "By Distance"]
     static let ItemsDidChangeNotification = "ItemsDidChangeNotification"
-    static let UserLocationUpdatedNotification = "UserLocationUpdatedNotification"
-    //    static let ID = "GS-JJLsD2oA2RKT159BCjg"
+    static let UserLocationUpdatedNotification = Notification.Name(rawValue: "UserLocationUpdatedNotification")
     static let Key = "QLxSzhwtQAgxCff4OR41aL1lwBSiygcUc8h3VyKBhiKLAbVJLBPZpDapVy4QkZ5fpcqW-90avEzmQyZPVNSWI4dLB2e2J7Dg1-TjaFsgW2GBVq-iPx1gVKkeI0cRWHYx"
-    static let TorontoLatitude = 43.700110
-    static let TorontoLongitude = -79.416300
-    static let TorontoCoordinates = "43.7001100,-79.4163000"
+//    static let TorontoLatitude = 43.700110
+//    static let TorontoLongitude = -79.416300
+//    static let TorontoCoordinates = "43.7001100,-79.4163000"
+    static let NewLatitude = 40.730610
+    static let NewLongitude = -73.935242
 }
 
 class YelpLocate {

@@ -13,12 +13,11 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var runner: UIActivityIndicatorView!
     @IBOutlet weak var sortButton: UIButton!
-    var userLocation: UserLocation!
     @IBAction func sort(_ sender: UIButton) {
         if YelpLocate.shared.businesses.isEmpty {
             return
         }
-        YelpLocate.shared.itemsAreFromServer = false;
+        YelpLocate.shared.itemsAreFromServer = false
         if sender.tag == 0 {
             sender.setTitle(Constants.ButtonTitles[1], for: .normal)
             sender.tag = 1
@@ -35,8 +34,6 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidLoad() {
         splitViewController!.delegate = self
         super.viewDidLoad()
-        userLocation = UserLocation()
-        userLocation.requestLocation()
         NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: Constants.ItemsDidChangeNotification), object: nil, queue: nil) {_ in
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -74,16 +71,13 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if textField.text != nil  && textField.text != "" {
             term1 += ","+textField.text!.replacingOccurrences(of: " ", with: ",", options: .literal, range: nil)
         }
-        Client.shared.searchWithTerm(term1, sort: .distance, success: {
-            items in
+        Client.shared.searchWithTerm(term1, sort: .distance, failure: { DispatchQueue.main.async { self.runner.stopAnimating() }}) { items in
             YelpLocate.shared.itemsAreFromServer = true
             YelpLocate.shared.getBusinesses(from: items)
-            DispatchQueue.main.async(execute: {
+            DispatchQueue.main.async{
                 self.runner.stopAnimating()
-            })
-
-        })
-
+            }
+        }
     }
     
     //MARK: - UITableViewDataSource
@@ -125,7 +119,6 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
 }
 
 //MARK: - UISplitViewControllerDelegate
-
 extension ListViewController: UISplitViewControllerDelegate {
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
         return true

@@ -14,9 +14,9 @@ enum SortMode: String {
 class Client {
     static let shared = Client()
     
-    func searchWithTerm(_ term: String, sort: SortMode? = nil, success: @escaping ([[String: Any]]) -> ()) {
+    func searchWithTerm(_ term: String, sort: SortMode? = nil, failure: @escaping () -> (), success: @escaping ([[String: Any]]) -> ()) {
         var urlComponents = URLComponents(string: Constants.basePath + "businesses/search")!
-        urlComponents.queryItems = [URLQueryItem(name: "limit", value: "10"), URLQueryItem(name: "term", value: term), URLQueryItem(name: "location", value: Constants.TorontoCoordinates)]
+        urlComponents.queryItems = [URLQueryItem(name: "limit", value: "10"), URLQueryItem(name: "term", value: term), URLQueryItem(name: "location", value: String(UserLocationManager.instance.latitude) + "," + String(UserLocationManager.instance.longitude))]
         if sort != nil {
             urlComponents.queryItems!.append(URLQueryItem(name: "sort_by", value: sort!.rawValue))
         }
@@ -30,13 +30,18 @@ class Client {
                     if let dictionaries = value as? [String: Any], let businesses = dictionaries["businesses"] as? [[String: Any]] {
                         success(businesses)
                     }
+                    else {
+                        failure()
+                    }
                 }
                 catch {
                     debugPrint(error)
+                    failure()
                 }
             }
             else {
                 debugPrint(error!)
+                failure()
             }
         }.resume()
     }

@@ -10,8 +10,7 @@ import MapKit
 
 class Item: NSObject {
     private var dictionary: [String: Any]
-    private var userLocation = UserLocation()
-    lazy var distance: Double = {return self.location.distance(from: self.userLocation.location)}()
+    lazy var distance: Double = {return self.location.distance(from: UserLocationManager.instance.location)}()
     var name: String {
         get {
             return dictionary["name"] as! String
@@ -59,9 +58,6 @@ class Item: NSObject {
             return (categories.map({ $0[0] }).joined(separator: ", "))
         }
         return ""
-    }
-    var review: String? {
-        return self.dictionary["snippet_text"] as? String
     }
 
     init(_ dictionary: [String: Any]) {

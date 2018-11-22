@@ -17,22 +17,14 @@ class ReviewViewController: UIViewController {
         }
     }
     
-    @IBAction func dismiss(_ sender: UIButton) {
-        presentingViewController?.dismiss(animated: true, completion: nil)
-    }
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         updateUI()
-    }
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        preferredContentSize = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        preferredContentSize = CGSize(width: 300, height: 80)
     }
     private func updateUI() {
 //        title = item?.displayAddress
         nameLabel?.text = item?.name
-        infoLabel?.text = item?.review
+        infoLabel?.text = item?.displayAddress
     }
 }
