@@ -11,6 +11,21 @@ import CoreLocation
     class UserLocationManager: CLLocationManager, CLLocationManagerDelegate {
         static let instance = UserLocationManager()
         
+        override init() {
+            super.init()
+            requestWhenInUseAuthorization()
+            if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+                delegate = self
+                desiredAccuracy = kCLLocationAccuracyKilometer
+                requestLocation()
+            }
+        }
+        var latitude: Double = Constants.NewLatitude
+        var longitude: Double = Constants.NewLongitude
+        override var location: CLLocation! {
+            return CLLocation(latitude: latitude, longitude: longitude)
+        }
+        
         func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
             let location = locations.last!
             if location.horizontalAccuracy > 0 {
@@ -22,26 +37,11 @@ import CoreLocation
                     self?.startUpdatingLocation()
                 })
             }
-
+            
         }
         
         func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
             print("error = \(error)")
-        }
-        
-        override init() {
-            super.init()
-            requestWhenInUseAuthorization()
-            if CLLocationManager.authorizationStatus() == .authorizedWhenInUse, CLLocationManager.locationServicesEnabled() {
-                delegate = self
-                desiredAccuracy = kCLLocationAccuracyKilometer
-                requestLocation()
-            }
-        }
-        var latitude: Double = Constants.NewLatitude
-        var longitude: Double = Constants.NewLongitude
-        override var location: CLLocation! {
-            return CLLocation(latitude: latitude, longitude: longitude)
         }
     }
 

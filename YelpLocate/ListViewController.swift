@@ -14,49 +14,33 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var runner: UIActivityIndicatorView!
     @IBOutlet weak var sortButton: UIButton!
     @IBAction func sort(_ sender: UIButton) {
-        if YelpLocate.shared.businesses.isEmpty {
-            return
-        }
         YelpLocate.shared.itemsAreFromServer = false
-        if sender.tag == 0 {
-            sender.setTitle(Constants.ButtonTitles[1], for: .normal)
-            sender.tag = 1
-            YelpLocate.shared.businesses.sort{ $0.name < $1.name }
-        } else {
-            sender.setTitle(Constants.ButtonTitles[0], for: .normal)
-            sender.tag = 0
-            YelpLocate.shared.businesses.sort{ $0.distance < $1.distance }
-        }
-    }
-    override func awakeFromNib() {
-        super.awakeFromNib();
+        YelpLocate.shared.sortItems()
+        sender.setTitle(YelpLocate.shared.sortedState.caption, for: .normal)
     }
     override func viewDidLoad() {
-        splitViewController!.delegate = self
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: Constants.ItemsDidChangeNotification), object: nil, queue: nil) {_ in
+        splitViewController!.delegate = self
+        NotificationCenter.default.addObserver(forName: Constants.ItemsDidChangeNotification, object: nil, queue: nil) {_ in
             DispatchQueue.main.async {
-                self.tableView.reloadData()
-                if YelpLocate.shared.itemsAreFromServer && self.sortButton.tag == 1 {
-                    self.sortButton.setTitle(Constants.ButtonTitles[0], for: .normal)
-                    self.sortButton.tag = 0
+                if YelpLocate.shared.itemsAreFromServer && YelpLocate.shared.sortedState != .byDistance {
+                    YelpLocate.shared.sortItems()
                 }
+                self.tableView.reloadData()
             }
         }
         performSearch()
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: Constants.ItemsDidChangeNotification), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Constants.ItemsDidChangeNotification, object: nil)
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let identifier = segue.identifier {
             switch identifier {
             case "Show Map":
-//                print(segue.destination.childViewControllers[0])
                 if let mapViewController = segue.destination.children[0] as? MapViewController {
                     let item = (sender as! ListTableViewCell).item
-//                    mapViewController.items = YelpLocate.shared.businesses
                     mapViewController.item = item
                     mapViewController.navigationItem.title = item?.name
                 }
@@ -71,8 +55,8 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if textField.text != nil  && textField.text != "" {
             term1 += ","+textField.text!.replacingOccurrences(of: " ", with: ",", options: .literal, range: nil)
         }
-        Client.shared.searchWithTerm(term1, sort: .distance, failure: { DispatchQueue.main.async { self.runner.stopAnimating() }}) { items in
-            YelpLocate.shared.itemsAreFromServer = true
+        YelpLocate.shared.itemsAreFromServer = true
+        Client.shared.search(with: term1, failure: { DispatchQueue.main.async { self.runner.stopAnimating() }}) { items in
             YelpLocate.shared.getBusinesses(from: items)
             DispatchQueue.main.async{
                 self.runner.stopAnimating()

@@ -15,7 +15,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
             mapView.delegate = self
             mapView.layer.cornerRadius = 9.0
             mapView.layer.masksToBounds = true
-//            mapView.showsUserLocation = true
+            mapView.showsUserLocation = true
             mapView.userTrackingMode = .followWithHeading
             annotate()
         }
@@ -27,20 +27,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
             }
             if item != nil {
                 navigationItem.title = item!.displayAddress
-                mapView?.selectAnnotation(item!, animated: true)
                 annotate()
             }
         }
     }
-    private let annotation = MKPointAnnotation()
-    private lazy var annotationView: MKPinAnnotationView = {
-        let view = MKPinAnnotationView(annotation: self.annotation, reuseIdentifier: "BusinessAnnotation")
-        view.image = UIImage(named: "MyLocationPin")
-        view.pinTintColor = UIColor.blue
-        view.canShowCallout = true
-        view.animatesDrop = true
-        return view
-    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,19 +40,17 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     }
     
     private func annotate() {
+        mapView?.removeAnnotations(self.mapView.annotations)
         //!        let center = CLLocationCoordinate2D(latitude: UserLocationManager.instance.latitude, longitude: UserLocationManager.instance.latitude)
         let center = CLLocationCoordinate2D(latitude: UserLocationManager.instance.latitude, longitude: UserLocationManager.instance.longitude)
-        annotation.coordinate = center
         self.mapView?.setRegion(MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)), animated: true)
         /*        let region = MKCoordinateRegion(center: center, span: self.mapView.region.span)
          self.mapView.setRegion(region, animated: true)*/
+//        annotation.coordinate = center
         let items = YelpLocate.shared.businesses
         if !items.isEmpty {
-            mapView?.removeAnnotation(annotation)
-            mapView?.removeAnnotations(self.mapView.annotations)
-            mapView?.addAnnotation(annotation)
             mapView?.addAnnotations(items)
-            mapView?.showAnnotations([annotation]+items, animated: true)
+            mapView?.showAnnotations(items, animated: true)
             if item != nil {
                 mapView?.selectAnnotation(item!, animated: true)
             }
@@ -110,7 +98,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         }
         view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
         if annotation === item {
-            view.image = UIImage(named: "MyAnnotationPin")
+            view.image = UIImage(named: "MyLocationPin")
         }
         view.canShowCallout = true
         return view

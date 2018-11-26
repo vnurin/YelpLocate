@@ -39,25 +39,23 @@ class Item: NSObject {
         return nil
     }
     private var location: CLLocation {
-        return CLLocation(latitude: latitude!, longitude: longitude!)
+        return CLLocation(latitude: latitude, longitude: longitude)
     }
-    private var latitude: Double? {
+    private var latitude: Double {
         if let coordinate = self.dictionary["coordinates"] as? [String: Any] {
             return (coordinate["latitude"] as! Double)
         }
-        return nil
+        else {
+            return UserLocationManager.instance.latitude
+        }
     }
-    private var longitude: Double? {
+    private var longitude: Double {
         if let coordinate = self.dictionary["coordinates"] as? [String: Any] {
             return (coordinate["longitude"] as! Double)
         }
-        return nil
-    }
-    private var displayCategories: String {
-        if let categories = self.dictionary["categories"] as? Array<Array<String>> {
-            return (categories.map({ $0[0] }).joined(separator: ", "))
+        else {
+            return UserLocationManager.instance.longitude
         }
-        return ""
     }
 
     init(_ dictionary: [String: Any]) {
@@ -68,7 +66,7 @@ class Item: NSObject {
 //MARK: - MKAnnotation
 extension Item: MKAnnotation {
     var coordinate: CLLocationCoordinate2D {
-        return CLLocationCoordinate2D(latitude: latitude!, longitude: longitude!)
+        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
     var title: String? {
         return name

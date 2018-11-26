@@ -20,7 +20,18 @@
 		F61EE6051DC2BA4B001F166A /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61EE6041DC2BA4B001F166A /* ListTableViewCell.swift */; };
 		F61EE6161DC58B88001F166A /* ReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61EE6151DC58B88001F166A /* ReviewViewController.swift */; };
 		F6E55A6E21A446680033F77F /* YelpLocate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E55A6D21A446680033F77F /* YelpLocate.swift */; };
+		F6E55A7621AC2FEE0033F77F /* YelpLocateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E55A7521AC2FEE0033F77F /* YelpLocateTests.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F6E55A7821AC2FEE0033F77F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F6FD56D11DC24C7200E47DCC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F6FD56D81DC24C7200E47DCC;
+			remoteInfo = YelpLocate;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		F61EE5281DC28403001F166A /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -37,10 +48,20 @@
 		F61EE6041DC2BA4B001F166A /* ListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		F61EE6151DC58B88001F166A /* ReviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewViewController.swift; sourceTree = "<group>"; };
 		F6E55A6D21A446680033F77F /* YelpLocate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YelpLocate.swift; sourceTree = "<group>"; };
+		F6E55A7321AC2FED0033F77F /* YelpLocateTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YelpLocateTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6E55A7521AC2FEE0033F77F /* YelpLocateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YelpLocateTests.swift; sourceTree = "<group>"; };
+		F6E55A7721AC2FEE0033F77F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F6FD56D91DC24C7200E47DCC /* YelpLocate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YelpLocate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		F6E55A7021AC2FED0033F77F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F6FD56D61DC24C7200E47DCC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -103,10 +124,20 @@
 			name = Controllers;
 			sourceTree = "<group>";
 		};
+		F6E55A7421AC2FED0033F77F /* YelpLocateTests */ = {
+			isa = PBXGroup;
+			children = (
+				F6E55A7521AC2FEE0033F77F /* YelpLocateTests.swift */,
+				F6E55A7721AC2FEE0033F77F /* Info.plist */,
+			);
+			path = YelpLocateTests;
+			sourceTree = "<group>";
+		};
 		F6FD56D01DC24C7200E47DCC = {
 			isa = PBXGroup;
 			children = (
 				F61EE5261DC28403001F166A /* YelpLocate */,
+				F6E55A7421AC2FED0033F77F /* YelpLocateTests */,
 				F6FD56DA1DC24C7200E47DCC /* Products */,
 				F61EE4E71DC26EDB001F166A /* Frameworks */,
 			);
@@ -116,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				F6FD56D91DC24C7200E47DCC /* YelpLocate.app */,
+				F6E55A7321AC2FED0033F77F /* YelpLocateTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -123,6 +155,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		F6E55A7221AC2FED0033F77F /* YelpLocateTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F6E55A7A21AC2FEE0033F77F /* Build configuration list for PBXNativeTarget "YelpLocateTests" */;
+			buildPhases = (
+				F6E55A6F21AC2FED0033F77F /* Sources */,
+				F6E55A7021AC2FED0033F77F /* Frameworks */,
+				F6E55A7121AC2FED0033F77F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F6E55A7921AC2FEE0033F77F /* PBXTargetDependency */,
+			);
+			name = YelpLocateTests;
+			productName = YelpLocateTests;
+			productReference = F6E55A7321AC2FED0033F77F /* YelpLocateTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		F6FD56D81DC24C7200E47DCC /* YelpLocate */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F6FD56EB1DC24C7200E47DCC /* Build configuration list for PBXNativeTarget "YelpLocate" */;
@@ -146,10 +196,15 @@
 		F6FD56D11DC24C7200E47DCC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0800;
+				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "BABELONi INC.";
 				TargetAttributes = {
+					F6E55A7221AC2FED0033F77F = {
+						CreatedOnToolsVersion = 10.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = F6FD56D81DC24C7200E47DCC;
+					};
 					F6FD56D81DC24C7200E47DCC = {
 						CreatedOnToolsVersion = 8.0;
 						ProvisioningStyle = Automatic;
@@ -175,11 +230,19 @@
 			projectRoot = "";
 			targets = (
 				F6FD56D81DC24C7200E47DCC /* YelpLocate */,
+				F6E55A7221AC2FED0033F77F /* YelpLocateTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		F6E55A7121AC2FED0033F77F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F6FD56D71DC24C7200E47DCC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -193,6 +256,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		F6E55A6F21AC2FED0033F77F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F6E55A7621AC2FEE0033F77F /* YelpLocateTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F6FD56D51DC24C7200E47DCC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -211,6 +282,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F6E55A7921AC2FEE0033F77F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F6FD56D81DC24C7200E47DCC /* YelpLocate */;
+			targetProxy = F6E55A7821AC2FEE0033F77F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		F61EE52A1DC28403001F166A /* LaunchScreen.storyboard */ = {
@@ -232,6 +311,71 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		F6E55A7B21AC2FEE0033F77F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = YelpLocateTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.babeloni.YelpLocateTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/YelpLocate.app/YelpLocate";
+			};
+			name = Debug;
+		};
+		F6E55A7C21AC2FEE0033F77F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = YelpLocateTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.babeloni.YelpLocateTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/YelpLocate.app/YelpLocate";
+			};
+			name = Release;
+		};
 		F6FD56E91DC24C7200E47DCC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -382,6 +526,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		F6E55A7A21AC2FEE0033F77F /* Build configuration list for PBXNativeTarget "YelpLocateTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F6E55A7B21AC2FEE0033F77F /* Debug */,
+				F6E55A7C21AC2FEE0033F77F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F6FD56D41DC24C7200E47DCC /* Build configuration list for PBXProject "YelpLocate" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

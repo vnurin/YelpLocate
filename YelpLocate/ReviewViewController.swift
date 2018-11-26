@@ -11,20 +11,12 @@ import UIKit
 class ReviewViewController: UIViewController {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var infoLabel: UILabel!
-    var item: Item? {
-        didSet {
-            updateUI()
-        }
-    }
+    var item: Item!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateUI()
         preferredContentSize = CGSize(width: 300, height: 80)
-    }
-    private func updateUI() {
-//        title = item?.displayAddress
-        nameLabel?.text = item?.name
-        infoLabel?.text = item?.displayAddress
+        nameLabel.text = item?.name
+        infoLabel.text = item?.displayAddress
     }
 }

@@ -11,8 +11,6 @@ import MapKit
 
 class ImageViewController: UIViewController {
     @IBOutlet weak var imageView: UIImageView!
-    
-    @IBOutlet weak var scrollVIew: UIScrollView!
     var item: Item!
     
     
